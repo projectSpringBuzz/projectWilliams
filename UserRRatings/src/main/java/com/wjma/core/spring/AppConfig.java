@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan(basePackages = { "com.wjma.spring.*" })
-@Import({ BDConfig.class })
+@Import({ BDConfig.class, SecurityConfig.class })
 public class AppConfig {
     
 }
