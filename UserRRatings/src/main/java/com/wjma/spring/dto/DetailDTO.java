@@ -9,8 +9,7 @@ public class DetailDTO implements Serializable {
 	private static final long serialVersionUID = -8628132197813378375L;
 
 	private int orderID;
-	private String productName;
-	private int rating;
+	private List<ProductDTO> products;
 	private List<NoteDTO> notes;
 
 	public int getOrderID() {
@@ -19,22 +18,6 @@ public class DetailDTO implements Serializable {
 
 	public void setOrderID(int orderID) {
 		this.orderID = orderID;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public int getRating() {
-		return rating;
-	}
-
-	public void setRating(int rating) {
-		this.rating = rating;
 	}
 
 	public List<NoteDTO> getNotes() {
@@ -47,6 +30,19 @@ public class DetailDTO implements Serializable {
 	public void addNote(NoteDTO note) {
 		if (note != null) {
 			getNotes().add(note);
+		}
+	}
+
+	public List<ProductDTO> getProducts() {
+		if(products == null){
+			products = new ArrayList<ProductDTO>();
+		}
+		return products;
+	}
+	
+	public void addProduct(ProductDTO product) {
+		if (product != null) {
+			getProducts().add(product);
 		}
 	}
 }
