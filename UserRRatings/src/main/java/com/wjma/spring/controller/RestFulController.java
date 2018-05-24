@@ -23,10 +23,10 @@ public class RestFulController {
 	
 	private static Logger logger = LoggerFactory.getLogger(RestFulController.class);
 
-	@PostMapping(value="detail")
+	@PostMapping(value="detail",produces="application/json")
 	ResponseEntity<?> saveDetail(@RequestBody DetailDTO detail) {
 		logger.info("DetailDTO: {} {}", detail.getOrderID(), detail.getProducts().size());
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
+		return new ResponseEntity<String>("", HttpStatus.OK);
     }
 	
 	@GetMapping(value="detail/phoneNumber/{phoneNumber}")
