@@ -6,9 +6,13 @@ CREATE DATABASE IF NOT EXISTS maddoxBD CHARACTER SET latin1 COLLATE latin1_swedi
 
 USE maddoxBD;
 
-DROP TABLE IF EXISTS orders;
+SET foreign_key_checks = 0;
+
 DROP TABLE IF EXISTS details;
 DROP TABLE IF EXISTS notes;
+DROP TABLE IF EXISTS orders;
+
+SET foreign_key_checks = 1;
 
 /* this table is a mock */
 CREATE TABLE orders(
@@ -35,3 +39,18 @@ CREATE TABLE notes(
    PRIMARY KEY ( id ),
    FOREIGN KEY (orderID) REFERENCES details(orderID)
 );
+
+INSERT INTO `orders` (`id`, `customerName`, `phoneNumber`) VALUES
+	(1, 'william', '12345678'),
+	(2, 'wjma', '12345679');
+
+INSERT INTO `details` (`id`, `orderID`, `productName`, `rating`) VALUES
+	(1, 1, 'product 1', 4),
+	(2, 1, 'product 2', 5),
+	(3, 1, 'product 3', 6),
+	(4, 2, 'product 1', 4),
+	(5, 2, 'product 4', 2);
+	
+INSERT INTO `notes` (`id`, `orderID`, `notes`) VALUES
+	(1, 1, 'text for table'),
+	(2, 1, 'text for table 2');
