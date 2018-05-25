@@ -36,7 +36,7 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 		try {
 			listOrderID = iUserRRatingDao.findOrderIdByPhoneNumber();
 		} catch (Exception e) {
-			logger.error("[findOrderIdByPhoneNumber] error ", e);
+			logger.error("[findOrderIdByPhoneNumber] error ");
 			listOrderID = new ArrayList<Integer>();
 			listOrderID.add(1);
 			listOrderID.add(2);
