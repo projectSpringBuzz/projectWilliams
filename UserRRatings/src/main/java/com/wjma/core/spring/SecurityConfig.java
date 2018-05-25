@@ -12,14 +12,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.wjma.spring.security.MyBasicAuthenticationEntryPoint;
 
+/**
+ * Enable Spring security configuration
+ * @author P023666
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	/**
+	 * Custom entry point to 401 status
+	 */
 	@Autowired
 	private MyBasicAuthenticationEntryPoint authenticationEntryPoint;
 
 	/**
+	 * Data in memory to http basic
 	 * user is: user
 	 * Password is: secret
 	 * visit http://www.devglan.com/online-tools/bcrypt-hash-generator
@@ -32,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.withUser("user").password("$2a$04$GrEFNY3igiJpvK4w/YL.vea9zOSbjnnVfMoen9jLL4yqLuHOrVkNu").authorities("ROLE_USER");
 	}
 
+	/**
+	 * CSRF security disabled and all urls of project are securized (need authentication)
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
@@ -40,6 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
 	}
 
+	/**
+	 * Encoder/Decoder for password (spring use it)
+	 * @return
+	 */
 	@Bean
 	public BCryptPasswordEncoder encoder() {
 	    return new BCryptPasswordEncoder();

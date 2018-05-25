@@ -1,0 +1,20 @@
+server:
+  port: 9000
+  
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: toor
+    url: jdbc:mysql://localhost:3306/maddoxBD?useSSL=false&requireSSL=false
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+  devtools:
+    remote:
+      secret: secret
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+      log-condition-evaluation-delta: true
