@@ -1,20 +1,16 @@
 package com.wjma.spring.dao;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.wjma.spring.dto.DetailDTO;
+import com.wjma.spring.dto.NoteDTO;
+import com.wjma.spring.dto.ProductDTO;
 
 @Repository
 public class UserRRatingDaoImpl implements IUserRRatingDao {
@@ -23,32 +19,53 @@ public class UserRRatingDaoImpl implements IUserRRatingDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public List<DetailDTO> findByPhoneNumber(String phoneNumber) {
-		String SP = "SP_FIND_DETAILS_BY_PHONENUMBER";
-		SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName(SP);
-
-		Map<String, Object> inParamMap = new HashMap<String, Object>();
-		inParamMap.put("phoneNumber", phoneNumber);
-		SqlParameterSource in = new MapSqlParameterSource(inParamMap);
-
-		Map<String, Object> simpleJdbcCallResult = simpleJdbcCall.execute(in);
-
-		Iterator<Entry<String, Object>> it = simpleJdbcCallResult.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, Object> entry = (Map.Entry<String, Object>) it.next();
-			ResultSet result = (ResultSet) entry.getValue();
-			String key = (String) entry.getKey();
-			Object value = (Object) entry.getValue();
-			System.out.println("Key: " + key);
-			System.out.println("Value: " + value);
-		}
-		return null;
+	public int saveProduct(ProductDTO product, int orderId) {
+		String sql = "insert into details(orderID, productName, rating) values(?, ?, ?)";
+		return jdbcTemplate.update(sql, new Object[] {orderId, product.getProductName(), product.getRating()});
+	}
+	
+	@Override
+	public int saveNote(NoteDTO note, int orderId) {
+		String sql = "insert into notes(orderID, notes) values(?, ?)";
+		return jdbcTemplate.update(sql, new Object[] {orderId, note.getNotes()});
 	}
 
 	@Override
-	public int saveDetail(DetailDTO detail) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<ProductDTO> findProductsByOrderId(int orderId) {
+		String sql = "{call maddoxBD.SP_FIND_PRODUCTS_BY_ORDERID(?)}";
+		return jdbcTemplate.query(sql, new Object[] { orderId }, new RowMapper<ProductDTO>() {
+
+			@Override
+			public ProductDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				ProductDTO p = new ProductDTO();
+				p.setId(rs.getInt(1));
+				p.setProductName(rs.getString(2));
+				p.setRating(rs.getInt(3));
+				return p;
+			}
+			
+		});
+	}
+
+	@Override
+	public List<NoteDTO> findNotesByOrderId(int orderId) {
+		String sql = "{call SP_FIND_NOTES_BY_ORDERID(?)}";
+		return jdbcTemplate.query(sql, new Object[] { orderId }, new RowMapper<NoteDTO>() {
+
+			@Override
+			public NoteDTO mapRow(ResultSet rs, int arg1) throws SQLException {
+				NoteDTO n = new NoteDTO();
+				n.setId(rs.getInt(1));
+				n.setNotes(rs.getString(2));
+				return n;
+			}
+			
+		});
+	}
+
+	@Override
+	public List<Integer> findOrderIdByPhoneNumber() {
+		throw new UnsupportedOperationException("Not supported yet");
 	}
 
 }

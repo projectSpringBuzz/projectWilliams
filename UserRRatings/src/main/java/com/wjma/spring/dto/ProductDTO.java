@@ -6,6 +6,7 @@ public class ProductDTO implements Serializable {
 
 	private static final long serialVersionUID = -1646314393920849852L;
 
+	private int id;
 	private String productName;
 	private int rating;
 	
@@ -20,5 +21,11 @@ public class ProductDTO implements Serializable {
 	}
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

@@ -39,12 +39,14 @@ CREATE TABLE notes(
    orderID INT NOT NULL,
    notes MEDIUMTEXT,
    PRIMARY KEY ( id ),
-   FOREIGN KEY (orderID) REFERENCES details(orderID)
+   FOREIGN KEY (orderID) REFERENCES orders(id)
 );
 
 INSERT INTO `orders` (`id`, `customerName`, `phoneNumber`) VALUES
-	(1, 'william', '12345678'),
-	(2, 'wjma', '12345679');
+	(1, 'william 1', '12345678'),
+	(2, 'william 2', '12345676'),
+	(3, 'william 3', '12345678'),
+	(4, 'william 4', '12345679');
 
 INSERT INTO `details` (`id`, `orderID`, `productName`, `rating`) VALUES
 	(1, 1, 'product 1', 4),
@@ -58,15 +60,21 @@ INSERT INTO `notes` (`id`, `orderID`, `notes`) VALUES
 	(2, 1, 'text for table 2');
 	
 DELIMITER //
-CREATE PROCEDURE `SP_FIND_DETAILS_BY_PHONENUMBER` (IN phoneNumber VARCHAR(15))
+CREATE PROCEDURE `SP_FIND_PRODUCTS_BY_ORDERID` (IN orderID INT)
 BEGIN
 	
-	SELECT d.id, d.orderID, d.productName, d.rating 
+	SELECT d.id, d.productName, d.rating 
 	FROM details d
-	WHERE d.orderID IN (SELECT o.id FROM orders o WHERE o.phoneNumber = phoneNumber);
+	WHERE d.orderID = orderID;
+
+END //
+
+DELIMITER //
+CREATE PROCEDURE `SP_FIND_NOTES_BY_ORDERID` (IN orderID INT)
+BEGIN
 	
-	SELECT n.id, n.orderID, n.notes 
+	SELECT n.id, n.notes 
 	FROM notes n
-	WHERE n.orderID IN (SELECT o.id FROM orders o WHERE o.phoneNumber = phoneNumber);
+	WHERE n.orderID = orderID;
 
 END //
