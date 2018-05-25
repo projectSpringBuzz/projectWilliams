@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS details;
 DROP TABLE IF EXISTS notes;
 DROP TABLE IF EXISTS orders;
 
+DROP PROCEDURE IF EXISTS SP_FIND_DETAILS_BY_PHONENUMBER;
+
 SET foreign_key_checks = 1;
 
 /* this table is a mock */
@@ -54,3 +56,17 @@ INSERT INTO `details` (`id`, `orderID`, `productName`, `rating`) VALUES
 INSERT INTO `notes` (`id`, `orderID`, `notes`) VALUES
 	(1, 1, 'text for table'),
 	(2, 1, 'text for table 2');
+	
+DELIMITER //
+CREATE PROCEDURE `SP_FIND_DETAILS_BY_PHONENUMBER` (IN phoneNumber VARCHAR(15))
+BEGIN
+	
+	SELECT d.id, d.orderID, d.productName, d.rating 
+	FROM details d
+	WHERE d.orderID IN (SELECT o.id FROM orders o WHERE o.phoneNumber = phoneNumber);
+	
+	SELECT n.id, n.orderID, n.notes 
+	FROM notes n
+	WHERE n.orderID IN (SELECT o.id FROM orders o WHERE o.phoneNumber = phoneNumber);
+
+END //

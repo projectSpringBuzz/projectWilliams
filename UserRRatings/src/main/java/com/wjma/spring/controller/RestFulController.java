@@ -2,6 +2,7 @@ package com.wjma.spring.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wjma.spring.dao.IUserRRatingDao;
 import com.wjma.spring.dto.DetailDTO;
 import com.wjma.spring.dto.NoteDTO;
 import com.wjma.spring.dto.ProductDTO;
@@ -22,6 +24,9 @@ import com.wjma.spring.dto.ProductDTO;
 public class RestFulController {
 	
 	private static Logger logger = LoggerFactory.getLogger(RestFulController.class);
+	
+	@Autowired
+	private IUserRRatingDao iUserRRatingDao;
 
 	@PostMapping(value="detail",produces="application/json")
 	ResponseEntity<?> saveDetail(@RequestBody DetailDTO detail) {
@@ -56,6 +61,9 @@ public class RestFulController {
 		detail.addProduct(p2);
 		detail.addNote(note1);
 		detail.addNote(note2);
+		
+		iUserRRatingDao.findByPhoneNumber(phoneNumber);
+		
 		return new ResponseEntity<DetailDTO>(detail, HttpStatus.OK);
     }
 }
