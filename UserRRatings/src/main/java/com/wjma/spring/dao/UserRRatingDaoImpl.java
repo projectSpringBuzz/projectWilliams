@@ -68,4 +68,10 @@ public class UserRRatingDaoImpl implements IUserRRatingDao {
 		throw new UnsupportedOperationException("Not supported yet");
 	}
 
+	@Override
+	public int updateRatingProduct(int productId, int rating) {
+		String sql = "update details set rating = ? where id = ?";
+		return jdbcTemplate.update(sql, new Object[] { rating, productId});
+	}
+
 }

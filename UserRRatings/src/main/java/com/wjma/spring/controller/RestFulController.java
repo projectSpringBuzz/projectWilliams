@@ -29,13 +29,28 @@ public class RestFulController {
 	@Autowired
 	private IUserRRatingService iUserRRatingService;
 
-	@PostMapping(value="detail",produces="application/json")
+	@PostMapping(value="detail")
 	ResponseEntity<?> saveDetail(@RequestBody DetailDTO detail) {
 		try {
 			iUserRRatingService.saveDetail(detail);
 			return new ResponseEntity<String>("", HttpStatus.OK);
 		}catch(Exception e) {
 			logger.error("ERROR call service save detail",e);
+			return new ResponseEntity<String>("", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
+	
+	@PostMapping(value="detail/product/{productId}/rating/{rating}")
+	ResponseEntity<?> saveDetailRating(@PathVariable("productId") int productId,
+			@PathVariable("rating") int rating) {
+		try {
+			if(productId <= 0 || rating <=0 || rating > 5) {
+				throw new Exception("Params invalid");
+			}
+			iUserRRatingService.updateRatingProduct(rating, productId);
+			return new ResponseEntity<String>("", HttpStatus.OK);
+		}catch(Exception e) {
+			logger.error("ERROR call service update rating",e);
 			return new ResponseEntity<String>("", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }

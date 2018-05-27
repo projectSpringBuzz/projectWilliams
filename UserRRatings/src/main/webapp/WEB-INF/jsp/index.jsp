@@ -4,40 +4,51 @@
 <html lang="en">
 <head>
 
-	<!-- Access the bootstrap Css like this, 
-		Spring boot will handle the resource mapping automcatically -->
-	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-	<link href="/css/main.css" rel="stylesheet" />
+<!-- Access the bootstrap Css like this, Spring boot will handle the resource mapping automcatically -->
+<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
 
 </head>
 <body>
 
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse withoutborder">
 		<div class="container">
+
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Spring Boot</a>
+				<a class="navbar-brand active" href="/">Maddox</a>
 			</div>
+			
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#about">About</a></li>
+					<c:if test="${pageContext.request.userPrincipal.name != null}">
+				        <form id="logoutForm" method="POST" action="${contextPath}/logout">
+				            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				        </form>
+				        <li>
+				        	<a href="#" onclick="document.forms['logoutForm'].submit()">
+				        		<span class="glyphicon glyphicon-log-out"></span>
+				        	</a>
+				        </li>
+    				</c:if>
 				</ul>
 			</div>
+			
 		</div>
 	</nav>
 
 	<div class="container">
-
-		<div class="starter-template">
-			<h1>Spring Boot Web JSP Example</h1>
-			<h2>Message: ${message}</h2>
-		</div>
-
-	</div>
+		<h2>Index Page</h2>
 	
+	    <div class="form-group">
+	    	<input id="phoneNumber" name="phoneNumber" type="text" class="form-control" placeholder="phone number" autofocus="true"/>
+	    	<br>
+	    	<button class="btn btn-lg btn-primary btn-block btnSearch" type="submit">Search</button>
+	    </div>
+	</div>
+
 	<script src="/webjars/jquery/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-
+	<script src="/js/index.js"></script>
 </body>
 
 </html>
