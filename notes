@@ -1,0 +1,97 @@
+URL POST: http://localhost:9000/v0/detail
+
+Http Basic:
+	user
+	secret
+
+Request:
+
+{
+  "orderID": 4,
+  "products": [
+    {
+      "productName": "product 11",
+      "rating": 4
+    },
+    {
+      "productName": "product 22",
+      "rating": 5
+    },
+    {
+      "productName": "product 33",
+      "rating": 6
+    }
+  ],
+  "notes": [
+    {
+      "notes": "text for table 11"
+    },
+    {
+      "notes": "text for table 22"
+    }
+  ]
+}
+
+Response: HTTP STATUS (200 or 500)
+
+
+=======================================================
+
+URL GET: http://localhost:9000/v0/detail/phoneNumber/{phoneNumber}
+
+Http Basic:
+	user
+	secret
+
+Request: Not apply
+
+Response:
+
+[
+    {
+        "orderID": 1,
+        "products": [
+            {
+                "id": 1,
+                "productName": "product 1",
+                "rating": 4
+            },
+            {
+                "id": 2,
+                "productName": "product 2",
+                "rating": 5
+            },
+            {
+                "id": 3,
+                "productName": "product 3",
+                "rating": 6
+            }
+        ],
+        "notes": [
+            {
+                "id": 1,
+                "notes": "text for table"
+            },
+            {
+                "id": 2,
+                "notes": "text for table 2"
+            }
+        ]
+    },
+    {
+        "orderID": 2,
+        "products": [
+            {
+                "id": 4,
+                "productName": "product 1",
+                "rating": 4
+            },
+            {
+                "id": 5,
+                "productName": "product 4",
+                "rating": 2
+            }
+        ],
+        "notes": []
+    }
+]
