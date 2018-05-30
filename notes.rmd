@@ -7,6 +7,8 @@ Http Basic:
 Request:
 
 {
+  "idphonenumber": 3,	
+  "phonenumber": "12345678",
   "orderID": 3,
   "details": [
     {
@@ -28,7 +30,7 @@ Request:
   "notes": [
     {
       "orderID": 3,
-      "notes": "asdas"
+      "notes": "werwer"
     }
   ]
 }
@@ -109,32 +111,34 @@ URL POST: http://localhost:9001/in/kafka/producer
 
 {
   "tx": {
-    "qid": 22,
-    "pid": 12
+    "qid": 23,
+    "pid": 13
   },
   "order": {
+    "idphonenumber": 3,
+    "phonenumber": "12345678",
     "orderID": 3,
     "details": [
       {
         "orderID": 3,
-        "productName": "product 5",
+        "productName": "product 1",
         "rating": 1
       },
       {
         "orderID": 3,
-        "productName": "product 6",
+        "productName": "product 2",
         "rating": 2
       },
       {
         "orderID": 3,
-        "productName": "product 7",
+        "productName": "product 3",
         "rating": 4
       }
     ],
     "notes": [
       {
         "orderID": 3,
-        "notes": "asdas"
+        "notes": "werwer"
       }
     ]
   }

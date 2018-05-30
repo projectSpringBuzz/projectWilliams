@@ -32,6 +32,13 @@ CREATE TABLE notes(
    PRIMARY KEY ( id )
 );
 
+-- It's a mock table
+CREATE TABLE orders (
+	id INT(11) NOT NULL,
+	phoneNumber VARCHAR(50) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+
 INSERT INTO `details` (`id`, `orderID`, `product_name`, `rating`) VALUES
 	(1, 1, 'product 1', 2),
 	(2, 1, 'product 2', 3),
@@ -43,6 +50,10 @@ INSERT INTO `notes` (`id`, `orderID`, `notes`) VALUES
 	(1, 1, 'asdas'),
 	(2, 1, 'qweqwe'),
 	(3, 2, 'gdfd');
+	
+INSERT INTO `orders` (`id`, `phoneNumber`) VALUES
+	(1, '12345678'),
+	(2, '12345678');
 	
 DELIMITER //
 CREATE PROCEDURE `SP_FIND_PRODUCTS_BY_ORDERID` (IN orderID INT)
