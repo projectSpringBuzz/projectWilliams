@@ -69,7 +69,8 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 	private List<Integer> findOrdersByPhoneNumber(String phoneNumber) {
 		List<Integer> listOrderID = null;
 		try {
-			listOrderID = iUserRRatingDao.findOrderIdByPhoneNumber();
+			//Mock data from table
+			listOrderID = iUserRRatingDao.findOrderIdByPhoneNumber(phoneNumber);
 		} catch (Exception e) {
 			logger.error("[findOrderIdByPhoneNumber] error ");
 
@@ -77,12 +78,22 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 			listOrderID = new ArrayList<Integer>();
 			listOrderID.add(1);
 			listOrderID.add(2);
+			listOrderID.add(3);
 		}
 		return listOrderID;
 	}
 
 	@Override
 	public List<OrderDTO> findOrdersListByPhoneNumber(String phoneNumber) {
+		return getListOrderByPhoneNumber(phoneNumber);
+	}
+
+	@Override
+	public List<OrderDTO> findOrdersListByPhoneNumberFlux(String phoneNumber) {
+		return getListOrderByPhoneNumber(phoneNumber);
+	}
+	
+	private List<OrderDTO> getListOrderByPhoneNumber(String phoneNumber){
 		List<OrderDTO> list = new ArrayList<OrderDTO>();
 		
 		List<Integer> listID = findOrdersByPhoneNumber(phoneNumber);
@@ -96,6 +107,11 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 			list.add(order);
 		}
 		return list;
+	}
+
+	@Override
+	public void insertPhoneNumberOrderId(Integer id,String phoneNumber) {
+		iUserRRatingDao.insertOrderIDForPhoneNumber(id,phoneNumber);
 	}
 
 }

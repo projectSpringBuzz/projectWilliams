@@ -34,6 +34,7 @@ public class RestFulController {
 	ResponseEntity<?> saveDetail(@RequestBody OrderDTO order) {
 		try {
 			iUserRRatingService.saveDetail(order);
+			iUserRRatingService.insertPhoneNumberOrderId(order.getIdphonenumber(), order.getPhonenumber());
 			return new ResponseEntity<String>("", HttpStatus.OK);
 		}catch(Exception e) {
 			logger.error("ERROR call service save detail",e);

@@ -8,6 +8,8 @@ public class OrderDTO implements Serializable {
 
 	private static final long serialVersionUID = -4660472384100654897L;
 
+	private Integer idphonenumber;
+	private String phonenumber;
 	private Integer orderID;
 	private List<DetailDTO> details;
 	private List<NoteDTO> notes;
@@ -35,6 +37,18 @@ public class OrderDTO implements Serializable {
 	}
 	public void setOrderID(Integer orderID) {
 		this.orderID = orderID;
+	}
+	public String getPhonenumber() {
+		return phonenumber;
+	}
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
+	}
+	public Integer getIdphonenumber() {
+		return idphonenumber;
+	}
+	public void setIdphonenumber(Integer idphonenumber) {
+		this.idphonenumber = idphonenumber;
 	}
 	
 }

@@ -46,71 +46,83 @@
 				</div>
 			</c:when>
 			<c:otherwise>
+				<h3>Orders details for: ${phoneNumber}</h3>
+				<input type="hidden" id="phoneNumber" value="${phoneNumber}" />
+				<br>
+				<div class="principal">
 				<c:forEach items="${list}" var="order">
-					<p>
-						<button class="btn btn-primary" type="button"
-							data-toggle="collapse"
-							data-target=".multi-collapse-${order.orderID}"
-							aria-expanded="false"
-							aria-controls="multiCollapseExample1-${order.orderID} multiCollapseExample2-${order.orderID}">
-							View Order</button>
-					</p>
-
-					<div
-						class="panel panel-primary collapse multi-collapse-${order.orderID}"
-						id="multiCollapseExample1-${order.orderID}">
-						<div class="panel-heading">
-							<h3 class="panel-title">
-								<span class="glyphicon glyphicon-shopping-cart"></span> Products
-							</h3>
-						</div>
-						<div class="panel-body">
-							<c:forEach items="${order.details}" var="detail">
-								<div class="radio">
-									<label> ${detail.productName}
-										 <c:forEach
-											end="${detail.rating}" begin="1" step="1" varStatus="loop">
-											<a href="#" data-rating="${loop.index}"
-												data-product="${detail.productName}" data-order="${detail.orderID}"
-												class="updateRating"> <span data-product="${detail.productName}"
-												data-order="${detail.orderID}" data-rating="${loop.index}"
-												class="glyphicon glyphicon-star"></span>
-											</a>
-										</c:forEach> <c:if test="${detail.rating < 5}">
-											<c:forEach end="5" begin="${detail.rating+1}" step="1"
-												varStatus="loop">
-												<a href="#" data-rating="${loop.index}"
-													data-product="${detail.productName}" data-order="${detail.orderID}"
-													class="updateRating"> <span data-product="${detail.productName}"
-													data-order="${detail.orderID}" data-rating="${loop.index}"
-													class="glyphicon glyphicon-star-empty"></span>
-												</a>
-											</c:forEach>
-										</c:if>
-									</label>
+					
+					<c:choose>
+						<c:when test="${order.details.size() > 0}">
+						
+							<p>
+								<button class="btn btn-primary" type="button"
+									data-toggle="collapse"
+									data-target=".multi-collapse-${order.orderID}"
+									aria-expanded="false"
+									aria-controls="multiCollapseExample1-${order.orderID} multiCollapseExample2-${order.orderID}">
+									View Order ${order.orderID}</button>
+							</p>
+		
+							<div class="panel panel-primary collapse multi-collapse-${order.orderID}"
+								id="multiCollapseExample1-${order.orderID}">
+								
+								<div class="panel-heading">
+									<h3 class="panel-title">
+										<span class="glyphicon glyphicon-shopping-cart"></span> Products
+									</h3>
 								</div>
-							</c:forEach>
-						</div>
-					</div>
-
-					<div
-						class="panel panel-primary collapse multi-collapse-${order.orderID}"
-						id="multiCollapseExample2-${order.orderID}">
-						<div class="panel-heading">
-							<h3 class="panel-title">
-								<span class="glyphicon glyphicon-list-alt"></span> Notes
-							</h3>
-						</div>
-						<div class="panel-body">
-							<c:forEach items="${order.notes}" var="note">
-								<div class="form-group">
-									<textarea class="form-control" rows="3" disabled>${note.notes}</textarea>
+								
+								<div class="panel-body">
+									<c:forEach items="${order.details}" var="detail">
+										<div class="radio">
+											<label> ${detail.productName}
+												 <c:forEach
+													end="${detail.rating}" begin="1" step="1" varStatus="loop">
+													<a href="#" data-rating="${loop.index}"
+														data-product="${detail.productName}" data-order="${detail.orderID}"
+														class="updateRating"> <span data-product="${detail.productName}"
+														data-order="${detail.orderID}" data-rating="${loop.index}"
+														class="glyphicon glyphicon-star"></span>
+													</a>
+												</c:forEach> <c:if test="${detail.rating < 5}">
+													<c:forEach end="5" begin="${detail.rating+1}" step="1"
+														varStatus="loop">
+														<a href="#" data-rating="${loop.index}"
+															data-product="${detail.productName}" data-order="${detail.orderID}"
+															class="updateRating"> <span data-product="${detail.productName}"
+															data-order="${detail.orderID}" data-rating="${loop.index}"
+															class="glyphicon glyphicon-star-empty"></span>
+														</a>
+													</c:forEach>
+												</c:if>
+											</label>
+										</div>
+									</c:forEach>
 								</div>
-							</c:forEach>
-						</div>
-					</div>
+							</div>
 
+							<div
+								class="panel panel-primary collapse multi-collapse-${order.orderID}"
+								id="multiCollapseExample2-${order.orderID}">
+								<div class="panel-heading">
+									<h3 class="panel-title">
+										<span class="glyphicon glyphicon-list-alt"></span> Notes
+									</h3>
+								</div>
+								<div class="panel-body">
+									<c:forEach items="${order.notes}" var="note">
+										<div class="form-group">
+											<textarea class="form-control" rows="3" disabled>${note.notes}</textarea>
+										</div>
+									</c:forEach>
+								</div>
+							</div>
+							</c:when>
+							<c:otherwise></c:otherwise>
+						</c:choose>
 				</c:forEach>
+				</div>
 			</c:otherwise>
 		</c:choose>
 

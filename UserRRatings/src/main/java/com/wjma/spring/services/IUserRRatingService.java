@@ -9,6 +9,8 @@ import com.wjma.spring.dto.OrderDTO;
 public interface IUserRRatingService {
 
 	public List<OrderDTO> findOrdersListByPhoneNumber(String phoneNumber);
+	public void insertPhoneNumberOrderId(Integer id, String phoneNumber);
+	public List<OrderDTO> findOrdersListByPhoneNumberFlux(String phoneNumber);
 	public List<DetailDTO> findDetailsByOrderID(int orderID);
 	public List<NoteDTO> findNotesByOrderID(int orderID);
 	public void saveDetail(OrderDTO order) throws Exception;

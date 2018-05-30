@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wjma.apachekafka.dao.DetailRepository;
 import com.wjma.apachekafka.dao.NoteRepository;
+import com.wjma.apachekafka.dao.OrderRepository;
 import com.wjma.spring.dto.DetailDTO;
 import com.wjma.spring.dto.NoteDTO;
+import com.wjma.spring.dto.Order;
 import com.wjma.spring.dto.OrderDTO;
 
 @Service
@@ -19,6 +21,9 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 	
 	@Autowired
 	private NoteRepository noteRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
 
 	/**
 	 * insert into (master - detail) for tables mysql, it has rollback if error
@@ -34,5 +39,11 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 		for (NoteDTO n : order.getNotes()) {
 			noteRepository.save(n);
 		}
+		
+		Order ord = new Order();
+		ord.setId(order.getIdphonenumber());
+		ord.setPhonenumber(order.getPhonenumber());
+		
+		orderRepository.save(ord);
 	}
 }

@@ -7,7 +7,8 @@ import com.wjma.spring.dto.NoteDTO;
 
 public interface IUserRRatingDao {
 
-	List<Integer> findOrderIdByPhoneNumber();
+	List<Integer> findOrderIdByPhoneNumber(String phoneNumber);
+	void insertOrderIDForPhoneNumber(Integer id, String phoneNumber);
 	List<DetailDTO> findProductsByOrderId(int orderId);
 	List<NoteDTO> findNotesByOrderId(int orderId);
 	int saveProduct(DetailDTO detail);

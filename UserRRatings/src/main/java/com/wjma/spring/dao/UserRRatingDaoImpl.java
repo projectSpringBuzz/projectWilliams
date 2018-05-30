@@ -66,14 +66,28 @@ public class UserRRatingDaoImpl implements IUserRRatingDao {
 	}
 
 	@Override
-	public List<Integer> findOrderIdByPhoneNumber() {
-		throw new UnsupportedOperationException("Not supported yet");
+	public List<Integer> findOrderIdByPhoneNumber(String phoneNumber) {
+		String sql = "select * from orders where phoneNumber = ?";
+		return jdbcTemplate.query(sql, new Object[]{phoneNumber}, new RowMapper<Integer>(){
+
+			@Override
+			public Integer mapRow(ResultSet arg0, int arg1) throws SQLException {
+				return arg0.getInt(1);
+			}
+			
+		});
 	}
 
 	@Override
 	public int updateRatingProduct(int orderID, String productName, int rating) {
 		String sql = "update details set rating = ? where orderID = ? and product_name = ?";
 		return jdbcTemplate.update(sql, new Object[] { rating, orderID, productName});
+	}
+
+	@Override
+	public void insertOrderIDForPhoneNumber(Integer id, String phoneNumber) {
+		String sql = "insert into orders(id, phoneNumber) values(?,?)";
+		jdbcTemplate.update(sql, new Object[] { id, phoneNumber });
 	}
 
 }
