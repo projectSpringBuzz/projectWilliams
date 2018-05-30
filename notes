@@ -7,27 +7,28 @@ Http Basic:
 Request:
 
 {
-  "orderID": 4,
-  "products": [
+  "orderID": 3,
+  "details": [
     {
-      "productName": "product 11",
+      "orderID": 3,
+      "productName": "product 1",
+      "rating": 1
+    },
+    {
+      "orderID": 3,
+      "productName": "product 2",
+      "rating": 2
+    },
+    {
+      "orderID": 3,
+      "productName": "product 3",
       "rating": 4
-    },
-    {
-      "productName": "product 22",
-      "rating": 5
-    },
-    {
-      "productName": "product 33",
-      "rating": 6
     }
   ],
   "notes": [
     {
-      "notes": "text for table 11"
-    },
-    {
-      "notes": "text for table 22"
+      "orderID": 3,
+      "notes": "asdas"
     }
   ]
 }
@@ -50,48 +51,91 @@ Response:
 [
     {
         "orderID": 1,
-        "products": [
+        "details": [
             {
-                "id": 1,
+                "orderID": 1,
                 "productName": "product 1",
-                "rating": 4
+                "rating": 2
             },
             {
-                "id": 2,
+                "orderID": 1,
                 "productName": "product 2",
-                "rating": 5
+                "rating": 1
             },
             {
-                "id": 3,
+                "orderID": 1,
                 "productName": "product 3",
-                "rating": 6
+                "rating": 3
             }
         ],
         "notes": [
             {
                 "id": 1,
-                "notes": "text for table"
+                "orderID": 1,
+                "notes": "asdas"
             },
             {
                 "id": 2,
-                "notes": "text for table 2"
+                "orderID": 1,
+                "notes": "qweqwe"
             }
         ]
     },
     {
         "orderID": 2,
-        "products": [
+        "details": [
             {
-                "id": 4,
+                "orderID": 2,
                 "productName": "product 1",
                 "rating": 4
             },
             {
-                "id": 5,
+                "orderID": 2,
                 "productName": "product 4",
                 "rating": 2
             }
         ],
-        "notes": []
+        "notes": [
+            {
+                "id": 3,
+                "orderID": 2,
+                "notes": "gdfd"
+            }
+        ]
     }
 ]
+
+URL POST: http://localhost:9001/in/kafka/producer
+
+{
+  "tx": {
+    "qid": 22,
+    "pid": 12
+  },
+  "order": {
+    "orderID": 3,
+    "details": [
+      {
+        "orderID": 3,
+        "productName": "product 5",
+        "rating": 1
+      },
+      {
+        "orderID": 3,
+        "productName": "product 6",
+        "rating": 2
+      },
+      {
+        "orderID": 3,
+        "productName": "product 7",
+        "rating": 4
+      }
+    ],
+    "notes": [
+      {
+        "orderID": 3,
+        "notes": "asdas"
+      }
+    ]
+  }
+}
