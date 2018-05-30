@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wjma.spring.dao.IUserRRatingDao;
 import com.wjma.spring.dto.DetailDTO;
 import com.wjma.spring.dto.NoteDTO;
-import com.wjma.spring.dto.ProductDTO;
+import com.wjma.spring.dto.OrderDTO;
 
 @Service
 public class UserRRatingServiceImpl implements IUserRRatingService {
@@ -29,45 +29,30 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 	 * @return List
 	 */
 	@Override
-	public List<DetailDTO> findDetailsByPhoneNumber(String phoneNumber) {
-		List<DetailDTO> list = new ArrayList<DetailDTO>();
+	public List<DetailDTO> findDetailsByOrderID(int orderID) {
+		return iUserRRatingDao.findProductsByOrderId(orderID);
+	}
 
-		List<Integer> listOrderID = null;
-		try {
-			listOrderID = iUserRRatingDao.findOrderIdByPhoneNumber();
-		} catch (Exception e) {
-			logger.error("[findOrderIdByPhoneNumber] error ");
-			listOrderID = new ArrayList<Integer>();
-			listOrderID.add(1);
-			listOrderID.add(2);
-		}
-
-		DetailDTO detail = null;
-		for (Integer orderID : listOrderID) {
-			detail = new DetailDTO();
-			detail.setOrderID(orderID);
-			detail.getProducts().addAll(iUserRRatingDao.findProductsByOrderId(orderID));
-			detail.getNotes().addAll(iUserRRatingDao.findNotesByOrderId(orderID));
-
-			list.add(detail);
-		}
-		return list;
+	@Override
+	public List<NoteDTO> findNotesByOrderID(int orderID) {
+		return iUserRRatingDao.findNotesByOrderId(orderID);
 	}
 
 	/**
-	 * insert into (master - detail) for tables mysql, it has rollback if error exists
+	 * insert into (master - detail) for tables mysql, it has rollback if error
+	 * exists
 	 */
 	@Override
 	@Transactional(rollbackFor = { Exception.class, DataIntegrityViolationException.class })
-	public void saveDetail(DetailDTO detail) throws Exception {
-		for(ProductDTO p : detail.getProducts()) {
-			if(iUserRRatingDao.saveProduct(p, detail.getOrderID()) != 1 ) {
+	public void saveDetail(OrderDTO order) throws Exception {
+		for (DetailDTO p : order.getDetails()) {
+			if (iUserRRatingDao.saveProduct(p) != 1) {
 				throw new Exception("Error - save product in detailSave");
 			}
 		}
-		
-		for(NoteDTO n : detail.getNotes()) {
-			if(iUserRRatingDao.saveNote(n, detail.getOrderID()) != 1) {
+
+		for (NoteDTO n : order.getNotes()) {
+			if (iUserRRatingDao.saveNote(n) != 1) {
 				throw new Exception("Error - save note in detailSave");
 			}
 		}
@@ -75,10 +60,42 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 
 	@Override
 	@Transactional(rollbackFor = { Exception.class, DataIntegrityViolationException.class })
-	public void updateRatingProduct(int rating, int productId) throws Exception {
-		if(iUserRRatingDao.updateRatingProduct(productId, rating) == 0) {
+	public void updateRatingProduct(int orderID, String productName, int rating) throws Exception {
+		if (iUserRRatingDao.updateRatingProduct(orderID, productName, rating) == 0) {
 			throw new Exception("Error - save rating in detailSave");
 		}
+	}
+
+	private List<Integer> findOrdersByPhoneNumber(String phoneNumber) {
+		List<Integer> listOrderID = null;
+		try {
+			listOrderID = iUserRRatingDao.findOrderIdByPhoneNumber();
+		} catch (Exception e) {
+			logger.error("[findOrderIdByPhoneNumber] error ");
+
+			// simulate data from orders
+			listOrderID = new ArrayList<Integer>();
+			listOrderID.add(1);
+			listOrderID.add(2);
+		}
+		return listOrderID;
+	}
+
+	@Override
+	public List<OrderDTO> findOrdersListByPhoneNumber(String phoneNumber) {
+		List<OrderDTO> list = new ArrayList<OrderDTO>();
+		
+		List<Integer> listID = findOrdersByPhoneNumber(phoneNumber);
+		
+		OrderDTO order = null;
+		for(Integer orderID : listID){
+			order = new OrderDTO();
+			order.setOrderID(orderID);
+			order.setDetails(this.findDetailsByOrderID(orderID));
+			order.setNotes(this.findNotesByOrderID(orderID));
+			list.add(order);
+		}
+		return list;
 	}
 
 }

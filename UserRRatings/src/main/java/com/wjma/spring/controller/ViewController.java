@@ -1,7 +1,5 @@
 package com.wjma.spring.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.wjma.spring.dto.DetailDTO;
 import com.wjma.spring.services.IUserRRatingService;
 
 @Controller
@@ -32,16 +29,12 @@ public class ViewController {
 	public String findByPhoneNumber(Model model,
 			@PathVariable("phoneNumber") String phoneNumber) {
 		logger.info("details jsp!...");
-		List<DetailDTO> list = null;
+
 		if(phoneNumber == null || phoneNumber.isEmpty()) {
 			model.addAttribute("error", "Param phoneNumber not found");
 		}
 		
-		list = iUserRRatingService.findDetailsByPhoneNumber(phoneNumber);
-		if(list == null || list.isEmpty()) {
-			model.addAttribute("error", "search is empty");
-		}
-		model.addAttribute("list", list);
+		model.addAttribute("list", iUserRRatingService.findOrdersListByPhoneNumber(phoneNumber));
 		return "details";
 	}
 	

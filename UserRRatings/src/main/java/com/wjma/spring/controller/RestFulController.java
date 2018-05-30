@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wjma.spring.dto.DetailDTO;
+import com.wjma.spring.dto.OrderDTO;
 import com.wjma.spring.services.IUserRRatingService;
 
 @RestController
@@ -30,9 +31,9 @@ public class RestFulController {
 	private IUserRRatingService iUserRRatingService;
 
 	@PostMapping(value="detail")
-	ResponseEntity<?> saveDetail(@RequestBody DetailDTO detail) {
+	ResponseEntity<?> saveDetail(@RequestBody OrderDTO order) {
 		try {
-			iUserRRatingService.saveDetail(detail);
+			iUserRRatingService.saveDetail(order);
 			return new ResponseEntity<String>("", HttpStatus.OK);
 		}catch(Exception e) {
 			logger.error("ERROR call service save detail",e);
@@ -40,14 +41,15 @@ public class RestFulController {
 		}
     }
 	
-	@PostMapping(value="detail/product/{productId}/rating/{rating}")
-	ResponseEntity<?> saveDetailRating(@PathVariable("productId") int productId,
-			@PathVariable("rating") int rating) {
+	@PostMapping(value="detail/{orderID}/rating/{rating}")
+	ResponseEntity<?> saveDetailRating(@PathVariable("orderID") int orderID,
+			@PathVariable("rating") int rating,
+			@RequestParam("productName") String productName) {
 		try {
-			if(productId <= 0 || rating <=0 || rating > 5) {
+			if(productName == null || rating <=0 || rating > 5 || orderID <= 0) {
 				throw new Exception("Params invalid");
 			}
-			iUserRRatingService.updateRatingProduct(rating, productId);
+			iUserRRatingService.updateRatingProduct(orderID, productName,rating);
 			return new ResponseEntity<String>("", HttpStatus.OK);
 		}catch(Exception e) {
 			logger.error("ERROR call service update rating",e);
@@ -56,13 +58,13 @@ public class RestFulController {
     }
 
 	@GetMapping(value = "detail/phoneNumber/{phoneNumber}")
-	ResponseEntity<List<DetailDTO>> findByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) {
+	ResponseEntity<List<OrderDTO>> findByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) {
 		try {
-			return new ResponseEntity<List<DetailDTO>>(iUserRRatingService.findDetailsByPhoneNumber(phoneNumber),
+			return new ResponseEntity<List<OrderDTO>>(iUserRRatingService.findOrdersListByPhoneNumber(phoneNumber),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("ERROR call service search detail", e);
-			return new ResponseEntity<List<DetailDTO>>(new ArrayList<DetailDTO>(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<OrderDTO>>(new ArrayList<OrderDTO>(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
