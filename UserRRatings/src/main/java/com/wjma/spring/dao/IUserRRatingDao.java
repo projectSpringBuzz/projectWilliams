@@ -12,4 +12,6 @@ public interface IUserRRatingDao {
 	List<NoteDTO> findNotesByOrderId(int orderId);
 	int saveProduct(ProductDTO product, int orderId);
 	int saveNote(NoteDTO note, int orderId);
+	
+	int updateRatingProduct(int productId, int rating);
 }

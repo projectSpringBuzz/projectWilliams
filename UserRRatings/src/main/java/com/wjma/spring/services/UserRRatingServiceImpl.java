@@ -36,7 +36,7 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 		try {
 			listOrderID = iUserRRatingDao.findOrderIdByPhoneNumber();
 		} catch (Exception e) {
-			logger.error("[findOrderIdByPhoneNumber] error ", e);
+			logger.error("[findOrderIdByPhoneNumber] error ");
 			listOrderID = new ArrayList<Integer>();
 			listOrderID.add(1);
 			listOrderID.add(2);
@@ -54,6 +54,9 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 		return list;
 	}
 
+	/**
+	 * insert into (master - detail) for tables mysql, it has rollback if error exists
+	 */
 	@Override
 	@Transactional(rollbackFor = { Exception.class, DataIntegrityViolationException.class })
 	public void saveDetail(DetailDTO detail) throws Exception {
@@ -67,6 +70,14 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 			if(iUserRRatingDao.saveNote(n, detail.getOrderID()) != 1) {
 				throw new Exception("Error - save note in detailSave");
 			}
+		}
+	}
+
+	@Override
+	@Transactional(rollbackFor = { Exception.class, DataIntegrityViolationException.class })
+	public void updateRatingProduct(int rating, int productId) throws Exception {
+		if(iUserRRatingDao.updateRatingProduct(productId, rating) == 0) {
+			throw new Exception("Error - save rating in detailSave");
 		}
 	}
 

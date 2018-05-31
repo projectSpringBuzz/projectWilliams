@@ -1,7 +1,14 @@
+welcome:
+  message: Hello WJMA90
+
 server:
   port: 9000
-  
+
 spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
