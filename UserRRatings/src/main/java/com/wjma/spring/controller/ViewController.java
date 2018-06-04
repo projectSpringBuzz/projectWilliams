@@ -54,6 +54,11 @@ public class ViewController {
 		return "index";
 	}
 	
+	@GetMapping("/form")
+	public String form(Model model) {
+		return "detailsForm";
+	}
+	
 	
 	@GetMapping("/login")
 	public String login(Model model, @RequestParam(value="error", required=false) String error) {

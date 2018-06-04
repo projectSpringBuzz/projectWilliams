@@ -45,13 +45,24 @@ public class UserRRatingServiceImpl implements IUserRRatingService {
 	@Override
 	@Transactional(rollbackFor = { Exception.class, DataIntegrityViolationException.class })
 	public void saveDetail(OrderDTO order) throws Exception {
+		int orderID = 0;
+		
+		if(order.getIdphonenumber() == null){
+			orderID = iUserRRatingDao.insertOrderIDForPhoneNumber(null, order.getPhonenumber());
+			if( orderID <= 0){
+				throw new Exception("Error - save product in order Master");
+			}
+		}
+		
 		for (DetailDTO p : order.getDetails()) {
+			p.setOrderID(orderID);
 			if (iUserRRatingDao.saveProduct(p) != 1) {
 				throw new Exception("Error - save product in detailSave");
 			}
 		}
 
 		for (NoteDTO n : order.getNotes()) {
+			n.setOrderID(orderID);
 			if (iUserRRatingDao.saveNote(n) != 1) {
 				throw new Exception("Error - save note in detailSave");
 			}

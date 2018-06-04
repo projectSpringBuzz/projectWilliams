@@ -24,12 +24,15 @@
 				        <form id="logoutForm" method="POST" action="${contextPath}/logout">
 				            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				        </form>
+				        <li class="active"><a href="${contextPath}/form"> <span>form</span>
+						</a></li>
 				        <li>
 				        	<a href="#" onclick="document.forms['logoutForm'].submit()">
 				        		<span class="glyphicon glyphicon-log-out"></span>
 				        	</a>
 				        </li>
     				</c:if>
+    				<li><a href="${contextPath}/">Details</a></li>
 				</ul>
 			</div>
 			

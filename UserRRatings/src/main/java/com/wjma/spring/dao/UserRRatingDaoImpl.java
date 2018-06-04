@@ -1,12 +1,17 @@
 package com.wjma.spring.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.wjma.spring.dto.DetailDTO;
@@ -21,13 +26,13 @@ public class UserRRatingDaoImpl implements IUserRRatingDao {
 	@Override
 	public int saveProduct(DetailDTO detail) {
 		String sql = "insert into details(orderID, product_name, rating) values(?, ?, ?)";
-		return jdbcTemplate.update(sql, new Object[] {detail.getOrderID(), detail.getProductName(), detail.getRating()});
+		return jdbcTemplate.update(sql, new Object[] { detail.getOrderID(), detail.getProductName(), detail.getRating() });
 	}
-	
+
 	@Override
 	public int saveNote(NoteDTO note) {
 		String sql = "insert into notes(orderID, notes) values(?, ?)";
-		return jdbcTemplate.update(sql, new Object[] {note.getOrderID(), note.getNotes()});
+		return jdbcTemplate.update(sql, new Object[] { note.getOrderID(), note.getNotes() });
 	}
 
 	@Override
@@ -44,7 +49,7 @@ public class UserRRatingDaoImpl implements IUserRRatingDao {
 				p.setId(rs.getInt(4));
 				return p;
 			}
-			
+
 		});
 	}
 
@@ -61,33 +66,52 @@ public class UserRRatingDaoImpl implements IUserRRatingDao {
 				n.setOrderID(rs.getInt(3));
 				return n;
 			}
-			
+
 		});
 	}
 
 	@Override
 	public List<Integer> findOrderIdByPhoneNumber(String phoneNumber) {
 		String sql = "select * from orders where phoneNumber = ?";
-		return jdbcTemplate.query(sql, new Object[]{phoneNumber}, new RowMapper<Integer>(){
+		return jdbcTemplate.query(sql, new Object[] { phoneNumber }, new RowMapper<Integer>() {
 
 			@Override
 			public Integer mapRow(ResultSet arg0, int arg1) throws SQLException {
 				return arg0.getInt(1);
 			}
-			
+
 		});
 	}
 
 	@Override
 	public int updateRatingProduct(int orderID, String productName, int rating) {
 		String sql = "update details set rating = ? where orderID = ? and product_name = ?";
-		return jdbcTemplate.update(sql, new Object[] { rating, orderID, productName});
+		return jdbcTemplate.update(sql, new Object[] { rating, orderID, productName });
 	}
 
 	@Override
-	public void insertOrderIDForPhoneNumber(Integer id, String phoneNumber) {
+	public int insertOrderIDForPhoneNumber(Integer id, String phoneNumber) {
 		String sql = "insert into orders(id, phoneNumber) values(?,?)";
-		jdbcTemplate.update(sql, new Object[] { id, phoneNumber });
+		if (id == null) {
+			GeneratedKeyHolder holder = new GeneratedKeyHolder();
+
+			jdbcTemplate.update(new PreparedStatementCreator() {
+
+				@Override
+				public PreparedStatement createPreparedStatement(Connection arg0) throws SQLException {
+					PreparedStatement statement = arg0.prepareStatement("insert into orders(phoneNumber) values(?)", Statement.RETURN_GENERATED_KEYS);
+					statement.setString(1, phoneNumber);
+					return statement;
+				}
+
+			}, holder);
+
+			id = holder.getKey().intValue();
+		} else {
+			jdbcTemplate.update(sql, new Object[] { id, phoneNumber });
+		}
+
+		return id;
 	}
 
 }

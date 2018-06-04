@@ -33,8 +33,12 @@ public class RestFulController {
 	@PostMapping(value="detail")
 	ResponseEntity<?> saveDetail(@RequestBody OrderDTO order) {
 		try {
-			iUserRRatingService.saveDetail(order);
-			iUserRRatingService.insertPhoneNumberOrderId(order.getIdphonenumber(), order.getPhonenumber());
+			if(order.getIdphonenumber() != null){
+				iUserRRatingService.saveDetail(order);
+				iUserRRatingService.insertPhoneNumberOrderId(order.getIdphonenumber(), order.getPhonenumber());
+			} else {
+				iUserRRatingService.saveDetail(order);
+			}
 			return new ResponseEntity<String>("", HttpStatus.OK);
 		}catch(Exception e) {
 			logger.error("ERROR call service save detail",e);

@@ -26,12 +26,17 @@
 							<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
 						</form>
+						<li>
+				        	<a href="${contextPath}/form">
+				        		<span>form</span>
+				        	</a>
+				        </li>
 						<li><a href="#"
 							onclick="document.forms['logoutForm'].submit()"> <span
 								class="glyphicon glyphicon-log-out"></span>
 						</a></li>
 					</c:if>
-					<li class="active"><a href="#">Details</a></li>
+					<li><a href="${contextPath}/">Details</a></li>
 				</ul>
 			</div>
 		</div>
