@@ -34,7 +34,7 @@ CREATE TABLE notes(
 
 -- It's a mock table
 CREATE TABLE orders (
-	id INT(11) NOT NULL,
+	id INT(11) NOT NULL AUTO_INCREMENT,
 	phoneNumber VARCHAR(50) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 )
