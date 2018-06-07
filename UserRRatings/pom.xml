@@ -23,11 +23,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.wjma.dto</groupId>
-			<artifactId>CommonDTO</artifactId>
-			<version>[0.0.0,)</version>
-		</dependency>
 		<!-- Core Spring boot web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -128,6 +123,13 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>webjars-locator</artifactId>
 			<version>0.30</version>
+		</dependency>
+		
+		<!-- ORM dependencies -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 	</dependencies>
 	<build>

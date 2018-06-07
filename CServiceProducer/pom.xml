@@ -25,11 +25,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.wjma.dto</groupId>
-			<artifactId>CommonDTO</artifactId>
-			<version>[0.0.0,)</version>
-		</dependency>
 		<!-- depedency to create a producer -->
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
@@ -40,6 +35,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<!-- ORM dependencies -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		
 		<!-- testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
